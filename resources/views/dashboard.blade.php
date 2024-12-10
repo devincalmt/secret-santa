@@ -150,6 +150,12 @@
 </head>
 <body>
 
+<!-- Christmas Background Music -->
+<audio autoplay loop class="music-player">
+    <source src="{{ asset('audio/jingle-bell.mp3') }}" type="audio/mp3">
+    Your browser does not support the audio element.
+</audio>
+
 <div class="container mt-5">
     <a href="#myWish" class="blinking-text">
         <p><strong>Jangan lupa untuk mengisi keinginanmu di halaman bawah</strong></p>
@@ -385,6 +391,13 @@
 
         $(document).on('click', '.remove-item', function() {
             $(this).closest('tr').remove();
+        });
+    });
+
+    window.addEventListener('scroll', function() {
+        var audio = document.getElementById('christmas-music');
+        audio.play().catch(function(error) {
+            console.log("Autoplay blocked. User interaction required.");
         });
     });
 </script>
