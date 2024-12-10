@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pick a User</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
         .wishlist-section table {
             margin: 0 auto; /* Center the table horizontally */
@@ -35,11 +34,37 @@
             font-weight: bold;
             margin-top: 20px;
         }
+
+        .wishlist-section {
+            display: none; /* Hidden initially */
+        }
+
+        /* Blinking Text Style */
+        .blinking-text {
+            color: red;
+            font-weight: bold;
+            font-size: 1.5rem;
+            animation: blink 1s step-start infinite;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Blinking animation */
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="container mt-5">
+    <!-- Message to fill wishlist with blinking effect -->
+    <div class="blinking-text">
+        <p><strong>Jangan lupa untuk mengisi keinginanmu di halaman bawah</strong></p>
+    </div>
+
     <!-- Selected User Display -->
     <div class="text-center mt-4 selected-user" id="selectedUser">
         Selamat! Kamu akan menjadi santa untuk...
@@ -50,22 +75,49 @@
         <div id="rouletteContainer"></div>
     </div>
 
-    <!-- Wishlist Section -->
-    <div class="wishlist-section mt-4 text-center" id="wishlistSection" style="display: none;">
+    <!-- Button to Start the Roulette -->
+    <div class="text-center mt-4">
+        <button class="btn btn-primary" id="startRoulette">Cari Tahu Sekarang!</button>
+    </div>
+
+    <!-- Wishlist Section for Friend (Initially Hidden) -->
+    <div class="wishlist-section mt-4 text-center" id="wishlistSection">
         <h5>{{$receiverName}} Wishlist</h5>
         <div id="wishlistContainer" class="d-inline-block mb-3">
             <!-- Wishlist or fallback text will be dynamically inserted here -->
         </div>
         <form action="" method="post">
             <button id="remindButton" class="btn btn-secondary" style="display: none;">
-                Ingatkan mereka untuk memutuskan!<br> (Identitas mu dirahasiakan)
+                Ingatkan mereka untuk memutuskan! (identitas mu dirahasiakan)
             </button>
         </form>
     </div>
 
-    <!-- Button to Start the Roulette -->
-    <div class="text-center mt-4">
-        <button class="btn btn-primary" id="startRoulette">Cari Tau Sekarang!</button>
+    <!-- Wishlist Form Section (for your wishlist) -->
+    <div class="mt-4" id="wishlistFormSection">
+        <h5>Keinginanmu</h5>
+        <form id="wishlistForm">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Barang yang diinginkan</th>
+                        <th>Referensi link barang atau online shop</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="wishlistTableBody">
+                    <!-- Default row with empty inputs -->
+                    <tr>
+                        <td><input type="text" class="form-control" name="itemName[]" required></td>
+                        <td><input type="url" class="form-control" name="itemLink[]" required></td>
+                        <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-success" id="addWishlistItem">Tambah Barang</button>
+            <br><br>
+            <button type="submit" class="btn btn-primary" id="saveWishlist">Simpan dan beritahu santa!</button>
+        </form>
     </div>
 </div>
 
@@ -81,8 +133,11 @@
         var rouletteContainer = $('#rouletteContainer');
         var wishlistContainer = $('#wishlistContainer');
         var remindButton = $('#remindButton');
-        var wishlistSection = $('#wishlistSection');
-        var startRouletteButton = $('#startRoulette');
+        var wishlistFormSection = $('#wishlistFormSection');
+        var wishlistTableBody = $('#wishlistTableBody');
+
+        // Wishlist data array
+        var wishlistData = [];
 
         // Initialize roulette container with ???
         rouletteContainer.html('<div class="roulette-item">???</div>');
@@ -124,6 +179,11 @@
         }
         displayWishlist();
 
+        // Show the wishlist form section after roulette ends
+        function showWishlistForm() {
+            wishlistFormSection.show();
+        }
+
         // Shuffle users for visual randomness
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -155,14 +215,60 @@
 
             setTimeout(() => {
                 clearInterval(intervalId); // Stop the rotation
-                $('#rouletteContainer').html('<div class="roulette-item">' + receiverName + '</div>');                
+                $('#rouletteContainer').html('<div class="roulette-item">' + receiverName + '</div>');
                 audio.pause(); // Stop the audio
                 audio.currentTime = 0; // Reset audio position
-                
-                // Show the wishlist section and hide the roulette button
-                wishlistSection.show();
-                startRouletteButton.hide();
+
+                // Hide the Start Roulette button after the spin ends
+                $('#startRoulette').hide(); 
+
+                // Show wishlist form after roulette is done
+                showWishlistForm();
+                $('#wishlistSection').show(); // Show the friend's wishlist section
             }, totalSpins * interval);
+
+        });
+
+        // Add new item to wishlist
+        $('#addWishlistItem').on('click', function() {
+            var itemRow = `
+                <tr>
+                    <td><input type="text" class="form-control" name="itemName[]" required></td>
+                    <td><input type="url" class="form-control" name="itemLink[]" required></td>
+                    <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+                </tr>
+            `;
+            wishlistTableBody.append(itemRow);
+        });
+
+        // Remove item from wishlist
+        $(document).on('click', '.remove-item', function() {
+            $(this).closest('tr').remove();
+        });
+
+        // Save wishlist
+        $('#wishlistForm').on('submit', function(event) {
+            event.preventDefault();
+
+            // Get all the item names and links
+            var itemNames = $("input[name='itemName[]']").map(function() {
+                return $(this).val();
+            }).get();
+
+            var itemLinks = $("input[name='itemLink[]']").map(function() {
+                return $(this).val();
+            }).get();
+
+            // Combine them into an array of objects
+            wishlistData = itemNames.map(function(name, index) {
+                return { name: name, link: itemLinks[index] };
+            });
+
+            // You can use wishlistData to send the data to your server or display it
+            console.log(wishlistData);
+
+            // Display wishlist
+            displayWishlist();
         });
     });
 </script>
