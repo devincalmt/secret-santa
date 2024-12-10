@@ -188,7 +188,7 @@
 
     <div class="separator-container mt-5" id="myWish">
         <div class="separator"></div>
-        <span class="separator-text">Infokan Santa Keinginanmu</span>
+        <span class="separator-text">Infokan Santa Keinginanmu! </span>
     </div>
 
     <div class="mt-4" id="wishlistFormSection">
