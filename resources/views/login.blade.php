@@ -7,54 +7,58 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f4f4f4; /* Light background */
+            background-color: #f0f8ff; /* Light blue background for a cheerful vibe */
             font-family: 'Arial', sans-serif;
+            color: #333;
             overflow: hidden;
-            color: #fff;
+            position: relative;
         }
         .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
             margin-top: 50px;
             position: relative;
-            z-index: 1;
+            z-index: 10; /* Ensures the form is on top of other elements */
         }
         h2 {
             color: #d32f2f; /* Christmas red */
+            font-size: 2.5rem;
+            font-weight: bold;
         }
         .btn-primary {
             background-color: #388e3c; /* Christmas green */
             border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border-radius: 25px;
         }
         .btn-primary:hover {
             background-color: #2e7d32; /* Darker green on hover */
         }
-        .form-select {
-            border-color: #388e3c; /* Green border for select */
-        }
-        .form-control {
+        .form-select, .form-control {
+            border-radius: 10px;
             border-color: #388e3c;
+            font-size: 1.1rem;
         }
         .alert {
             color: #d32f2f;
-            background-color: #fff3e0; /* Light yellow background for errors */
+            background-color: #ffebee; /* Light pink background for errors */
             border: 1px solid #d32f2f;
         }
         /* Snow animation */
         .snowflake {
             position: absolute;
             top: -10px;
-            color: #b3e0ff; /* Light bluish color for snowflakes */
+            color: #b3e0ff;
             font-size: 1.5em;
-            z-index: 10;
-            pointer-events: none;
             animation: fall linear infinite;
             border-radius: 50%;
-            width: 10px;
-            height: 10px;
-            background-color: #b3e0ff; /* Light bluish snowflakes */
+            width: 12px;
+            height: 12px;
+            background-color: #b3e0ff;
+            z-index: 1; /* Lower z-index for snowflakes */
         }
         @keyframes fall {
             to {
@@ -67,12 +71,20 @@
             right: 10px;
             z-index: 100;
         }
+        .snowflakes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Prevents snowflakes from blocking clicks */
+        }
     </style>
 </head>
 <body>
 
 <!-- Christmas Background Music -->
-<audio autoplay loop class="music-player">
+<audio autoplay loop class="music-player" id="christmas-music">
     <source src="{{ asset('audio/jingle-bell.mp3') }}" type="audio/mp3">
     Your browser does not support the audio element.
 </audio>
@@ -89,21 +101,11 @@
     <div class="snowflake" style="left: 40%; animation-duration: 3.2s; animation-delay: 2.2s;"></div>
     <div class="snowflake" style="left: 45%; animation-duration: 4s; animation-delay: 1.8s;"></div>
     <div class="snowflake" style="left: 50%; animation-duration: 5s; animation-delay: 0.8s;"></div>
-    <div class="snowflake" style="left: 55%; animation-duration: 2.5s; animation-delay: 3.5s;"></div>
-    <div class="snowflake" style="left: 60%; animation-duration: 3.7s; animation-delay: 2.6s;"></div>
-    <div class="snowflake" style="left: 65%; animation-duration: 4.2s; animation-delay: 1s;"></div>
-    <div class="snowflake" style="left: 70%; animation-duration: 3s; animation-delay: 2.3s;"></div>
-    <div class="snowflake" style="left: 75%; animation-duration: 5s; animation-delay: 4.5s;"></div>
-    <div class="snowflake" style="left: 80%; animation-duration: 4s; animation-delay: 0.7s;"></div>
-    <div class="snowflake" style="left: 85%; animation-duration: 3.6s; animation-delay: 1.4s;"></div>
-    <div class="snowflake" style="left: 90%; animation-duration: 4.5s; animation-delay: 2.9s;"></div>
-    <div class="snowflake" style="left: 95%; animation-duration: 3.8s; animation-delay: 0.6s;"></div>
 </div>
 
 <div class="container mt-5">
-    <h2 class="text-center">Christmas Party</h2>
-    <h2 class="text-center">LG JGC - Jesus Goes to Cakung</h2>
-    <br>
+    <h2 class="text-center mb-4">🎄 Christmas Party 🎄</h2>
+    <h3 class="text-center mb-5">LG JGC - Jesus Goes to Cakung</h3>
 
     @if ($errors->any())
         <div class="alert alert-danger">
