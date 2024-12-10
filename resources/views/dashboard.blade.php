@@ -266,7 +266,7 @@
                     tableHtml += `
                         <tr>
                             <td>${item.title}</td>
-                            <td><a href="${item.link}" target="_blank">${item.link}</a></td>
+                            <td><a href="${item.link ?? ''}" target="_blank">${item.link ?? ''}</a></td>
                         </tr>
                     `;
                 });
