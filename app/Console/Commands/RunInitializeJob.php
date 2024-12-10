@@ -41,12 +41,12 @@ class RunInitializeJob extends Command
         $users = User::with('userDetails')->get();
         foreach ($users as $user) {
             foreach ($user->userDetails as $detail) {
-                $text = "Halo *{$user->name}*,\n\n".
-                    "Selamat datang ke secret santa LG JGC\n\n".
+                $url = env('APP_URL');
+                $text = "Halo *{$user->name}* 👋,\n\n".
+                    "Selamat datang ke secret santa LG JGC.🥳\n\n".
                     "Berikut adalah kode kamu: *{$user->code}* (Untuk verifikasi)\n\n".
-                    "Silakan menuju ke link dibawah ini untuk melihat siapa orang yang akan menerima hadiah dari kamu dan kasih tau apa yang kamu mau ke santa mu <3\n\n".
-                    "_{ini link}_\n\n".
-                    "Made with love from devinca <3";
+                    "Silakan menuju ke link dibawah ini untuk melihat siapa orang yang akan menerima hadiah dari kamu dan kasih tau apa yang kamu mau ke santa mu.🥰\n\n".
+                    "{$url}";
                     
                 $this->fonnteController->sendFonnteMessage($detail->phone_number, $text);
             }

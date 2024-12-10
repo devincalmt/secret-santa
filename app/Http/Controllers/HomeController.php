@@ -45,9 +45,11 @@ class HomeController extends Controller
 
         $receiverWishlist = $receiver->wishlists;
 
+        $myWishlists = $loggedInUser->wishlists;
+
         if ($loggedInUser) {
             // Logika setelah login, misalnya halaman dashboard
-            return view('dashboard', compact('loggedInUser', 'users', 'receiverName', 'receiverWishlist'));
+            return view('dashboard', compact('loggedInUser', 'users', 'receiverName', 'receiverWishlist', 'myWishlists'));
         }
 
         return abort(404); // Jika user tidak ditemukan

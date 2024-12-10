@@ -6,8 +6,34 @@
     <title>Pick a User</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .wishlist-section table {
-            margin: 0 auto; /* Center the table horizontally */
+        body {
+            background-color: #f1f1f1; /* Light gray background for the whole page */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background-color: white; /* White background for the main content */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Christmas Color Scheme */
+        .blinking-text {
+            color: #ff3b3f; /* Bright red */
+            font-weight: bold;
+            font-size: 1.5rem;
+            animation: blink 1s step-start infinite;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+
+        /* Blinking animation */
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
         }
 
         .roulette-box {
@@ -33,31 +59,15 @@
             font-size: 1.5rem;
             font-weight: bold;
             margin-top: 20px;
+            color: #006400; /* Dark green */
         }
 
+        /* Wishlist Section */
         .wishlist-section {
             display: none; /* Hidden initially */
         }
 
-        /* Blinking Text Style */
-        .blinking-text {
-            color: red;
-            font-weight: bold;
-            font-size: 1.5rem;
-            animation: blink 1s step-start infinite;
-            text-align: center;
-            margin-top: 20px;
-            text-decoration: none;
-        }
-
-        /* Blinking animation */
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
-
-        /* Pemisah Cantik */
+        /* Stylish separator */
         .separator-container {
             display: flex;
             justify-content: center;
@@ -69,7 +79,7 @@
         .separator {
             width: 100%;
             height: 2px;
-            background: linear-gradient(to right, #ff7f50, #ff6347, #ff4500);
+            background: linear-gradient(to right, #ff3b3f, #ff6347, #ff4500); /* Gradient red shades */
             border: none;
             border-radius: 5px;
         }
@@ -84,9 +94,29 @@
             z-index: 1;
         }
 
+        /* Wishlist Form Section */
+        #wishlistFormSection {
+            background-color: #e9f5db; /* Light green background */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
         #wishlistFormSection .btn-primary {
             display: block;
-            margin: 0 auto; /* Membuat tombol berada di tengah */
+            margin: 0 auto;
+        }
+
+        .btn-danger {
+            background-color: #ff6347; /* Red for remove buttons */
+        }
+
+        .btn-success {
+            background-color: #28a745; /* Green for add button */
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; /* Gray for reminder button */
         }
     </style>
 </head>
@@ -126,7 +156,7 @@
         </form>
     </div>
 
-    <!-- Pemisah Cantik -->
+    <!-- Stylish Separator -->
     <div class="separator-container mt-5" id="myWish">
         <div class="separator"></div>
         <span class="separator-text">Infokan Santa Keinginanmu</span>
@@ -135,7 +165,9 @@
     <!-- Wishlist Form Section (for your wishlist) -->
     <div class="mt-4" id="wishlistFormSection">
         <h5 class="text-center">My Wishlist</h5>
-        <form id="wishlistForm">
+        <form id="wishlistForm" action="{{ route('add-my-wishlist') }}" method="post">
+            <input type="hidden" name="user_id" value="{{$loggedInUser->id}}">
+            @csrf
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -145,12 +177,20 @@
                     </tr>
                 </thead>
                 <tbody id="wishlistTableBody">
-                    <!-- Default row with empty inputs -->
-                    <tr>
-                        <td><input type="text" class="form-control" name="itemName[]" required></td>
-                        <td><input type="url" class="form-control" name="itemLink[]" required></td>
-                        <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
-                    </tr>
+                    @forelse($myWishlists as $wishlist)
+                        <tr>
+                            <td><input type="text" class="form-control" name="itemName[]" value="{{ $wishlist->title }}" required></td>
+                            <td><input type="url" class="form-control" name="itemLink[]" value="{{ $wishlist->link }}" required></td>
+                            <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+                        </tr>
+                    @empty
+                        <!-- If no wishlist items exist, show a default empty row -->
+                        <tr>
+                            <td><input type="text" class="form-control" name="itemName[]" required></td>
+                            <td><input type="url" class="form-control" name="itemLink[]" required></td>
+                            <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
             <button type="button" class="btn btn-success" id="addWishlistItem">Tambah Barang</button>
@@ -283,31 +323,6 @@
         // Remove item from wishlist
         $(document).on('click', '.remove-item', function() {
             $(this).closest('tr').remove();
-        });
-
-        // Save wishlist
-        $('#wishlistForm').on('submit', function(event) {
-            event.preventDefault();
-
-            // Get all the item names and links
-            var itemNames = $("input[name='itemName[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            var itemLinks = $("input[name='itemLink[]']").map(function() {
-                return $(this).val();
-            }).get();
-
-            // Combine them into an array of objects
-            wishlistData = itemNames.map(function(name, index) {
-                return { name: name, link: itemLinks[index] };
-            });
-
-            // You can use wishlistData to send the data to your server or display it
-            console.log(wishlistData);
-
-            // Display wishlist
-            displayWishlist();
         });
     });
 </script>
