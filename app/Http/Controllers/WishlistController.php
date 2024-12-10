@@ -37,7 +37,6 @@ class WishlistController extends Controller
         $receiver = $secretSanta->receiver;
         $giver = $secretSanta->giver;
         $giverPhoneNumbers = $giver->userDetails->pluck('phone_number')->toArray();
-        // $giverPhoneNumbers = UserDetail::where('user_id', $giver->id)->pluck('phone_number')->toArray();
 
         $alreadySent = false;
 
@@ -73,12 +72,33 @@ class WishlistController extends Controller
                 $text .= "- {$newWishlist['title']} {$newWishlist['link']}\n";
             }
 
-            $text .= "\nTolong kabulkan permintaannya ya.🫶\n\nTerima kasih.🎉";
+            $text .= "\nTolong kabulkan permintaannya ya🫶\n\nTerima kasih🎉";
 
             $this->fonnteController->sendFonnteMessage($phoneNumber, $text);
         }
 
         // Redirect back to the user's wishlist page
         return redirect()->route('dashboard', ['id' => $user_id]);
+    }
+
+    public function remindToFill(Request $request) {
+        $secretSanta = SecretSanta::where('giver_id', $request->user_id)->first();
+        $receiver = $secretSanta->receiver;
+
+        $receiverPhoneNumber = $receiver->userDetails->pluck('phone_number')->toArray();
+
+        foreach ($receiverPhoneNumber as $phoneNumber) {
+            $url = env('APP_URL');
+
+            $text = "Halo *{$receiver->name}* 👋,\n\n".
+                "Jangan lupa untuk mengisi permintaanmu di link berikut ya karena santa-mu sedang menanti🤭\n\n".
+                "$url\n\n".
+                "Jangan lupa bahwa kode mu adalah: *$receiver->code*\n\n".
+                "Terima kasih🫶";
+
+            $this->fonnteController->sendFonnteMessage($phoneNumber, $text);
+        }
+
+        return redirect()->back();
     }
 }

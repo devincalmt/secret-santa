@@ -171,7 +171,9 @@
         <h5>{{$receiverName}} Wishlist</h5>
         <div id="wishlistContainer" class="d-inline-block mb-3">
         </div>
-        <form action="" method="post">
+        <form action="{{ route('remind-to-fill') }}" method="post">
+            @csrf
+            <input type="hidden" name="user_id" value="{{ $loggedInUser->id }}">
             <button id="remindButton" class="btn btn-secondary" style="display: none;">
                 Ingatkan mereka untuk memutuskan!<br> (Identitas mu dirahasiakan)
             </button>
@@ -186,7 +188,7 @@
     <div class="mt-4" id="wishlistFormSection">
         <h5 class="text-center">My Wishlist</h5>
         <form id="wishlistForm">
-            <table class="table table-bordered">
+            <table class="table table-bordered bg-white">
                 <thead>
                     <tr>
                         <th>Barang yang diinginkan</th>
