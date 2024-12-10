@@ -89,31 +89,13 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Adit',
                 'details' => [
-                    ['phone_number' => '628886333812']
+                    ['phone_number' => '62881082792958']
                 ]
             ],
             [
-                'name' => 'Edward',
+                'name' => 'Bella',
                 'details' => [
-                    ['phone_number' => '628886333812']
-                ]
-            ],
-            [
-                'name' => 'Regina',
-                'details' => [
-                    ['phone_number' => '628886333812']
-                ]
-            ],
-            [
-                'name' => 'Pacis',
-                'details' => [
-                    ['phone_number' => '628886333812']
-                ]
-            ],
-            [
-                'name' => 'Halo',
-                'details' => [
-                    ['phone_number' => '628886333812']
+                    ['phone_number' => '6287776701704']
                 ]
             ]
         ];
