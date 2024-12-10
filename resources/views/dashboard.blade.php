@@ -40,8 +40,6 @@
 <body>
 
 <div class="container mt-5">
-    <h2 class="text-center">Pick a User</h2>
-
     <!-- Selected User Display -->
     <div class="text-center mt-4 selected-user" id="selectedUser">
         Selamat! Kamu akan menjadi santa untuk...
@@ -53,21 +51,21 @@
     </div>
 
     <!-- Wishlist Section -->
-    <div class="wishlist-section mt-4 text-center">
+    <div class="wishlist-section mt-4 text-center" id="wishlistSection" style="display: none;">
         <h5>{{$receiverName}} Wishlist</h5>
         <div id="wishlistContainer" class="d-inline-block mb-3">
             <!-- Wishlist or fallback text will be dynamically inserted here -->
         </div>
         <form action="" method="post">
             <button id="remindButton" class="btn btn-secondary" style="display: none;">
-                Ingatkan mereka untuk memutuskan! (identitas mu dirahasiakan)
+                Ingatkan mereka untuk memutuskan!<br> (Identitas mu dirahasiakan)
             </button>
         </form>
     </div>
 
     <!-- Button to Start the Roulette -->
     <div class="text-center mt-4">
-        <button class="btn btn-primary" id="startRoulette">Start Roulette</button>
+        <button class="btn btn-primary" id="startRoulette">Cari Tau Sekarang!</button>
     </div>
 </div>
 
@@ -83,6 +81,8 @@
         var rouletteContainer = $('#rouletteContainer');
         var wishlistContainer = $('#wishlistContainer');
         var remindButton = $('#remindButton');
+        var wishlistSection = $('#wishlistSection');
+        var startRouletteButton = $('#startRoulette');
 
         // Initialize roulette container with ???
         rouletteContainer.html('<div class="roulette-item">???</div>');
@@ -124,7 +124,6 @@
         }
         displayWishlist();
 
-
         // Shuffle users for visual randomness
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -159,9 +158,13 @@
                 $('#rouletteContainer').html('<div class="roulette-item">' + receiverName + '</div>');                
                 audio.pause(); // Stop the audio
                 audio.currentTime = 0; // Reset audio position
+                
+                // Show the wishlist section and hide the roulette button
+                wishlistSection.show();
+                startRouletteButton.hide();
             }, totalSpins * interval);
         });
-});
+    });
 </script>
 
 </body>
