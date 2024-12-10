@@ -47,6 +47,7 @@
             animation: blink 1s step-start infinite;
             text-align: center;
             margin-top: 20px;
+            text-decoration: none;
         }
 
         /* Blinking animation */
@@ -55,15 +56,47 @@
                 opacity: 0;
             }
         }
+
+        /* Pemisah Cantik */
+        .separator-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .separator {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #ff7f50, #ff6347, #ff4500);
+            border: none;
+            border-radius: 5px;
+        }
+
+        .separator-text {
+            position: absolute;
+            background: #fff;
+            padding: 0 10px;
+            font-weight: bold;
+            color: #ff4500;
+            font-size: 1.25rem;
+            z-index: 1;
+        }
+
+        #wishlistFormSection .btn-primary {
+            display: block;
+            margin: 0 auto; /* Membuat tombol berada di tengah */
+        }
     </style>
 </head>
 <body>
 
 <div class="container mt-5">
     <!-- Message to fill wishlist with blinking effect -->
-    <div class="blinking-text">
+    <a href="#myWish" class="blinking-text">
         <p><strong>Jangan lupa untuk mengisi keinginanmu di halaman bawah</strong></p>
-    </div>
+    </a>
 
     <!-- Selected User Display -->
     <div class="text-center mt-4 selected-user" id="selectedUser">
@@ -88,14 +121,20 @@
         </div>
         <form action="" method="post">
             <button id="remindButton" class="btn btn-secondary" style="display: none;">
-                Ingatkan mereka untuk memutuskan! (identitas mu dirahasiakan)
+                Ingatkan mereka untuk memutuskan!<br> (identitas mu dirahasiakan)
             </button>
         </form>
     </div>
 
+    <!-- Pemisah Cantik -->
+    <div class="separator-container mt-5" id="myWish">
+        <div class="separator"></div>
+        <span class="separator-text">Infokan Santa Keinginanmu</span>
+    </div>
+
     <!-- Wishlist Form Section (for your wishlist) -->
     <div class="mt-4" id="wishlistFormSection">
-        <h5>Keinginanmu</h5>
+        <h5 class="text-center">My Wishlist</h5>
         <form id="wishlistForm">
             <table class="table table-bordered">
                 <thead>
