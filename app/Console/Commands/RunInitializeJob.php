@@ -46,7 +46,8 @@ class RunInitializeJob extends Command
                     "Selamat datang ke secret santa LG JGC🥳\n\n".
                     "Berikut adalah kode kamu: *{$user->code}* (Untuk verifikasi)\n\n".
                     "Silakan menuju ke link dibawah ini untuk melihat siapa orang yang akan menerima hadiah dari kamu dan kasih tau apa yang kamu mau ke santa mu🥰\n\n".
-                    "{$url}";
+                    "{$url}\n\n".
+                    "Kamu bisa masukan lebih dari satu ya, nanti santa yang bakal memilih mau kasih yang mana😝";
                     
                 $this->fonnteController->sendFonnteMessage($detail->phone_number, $text);
             }

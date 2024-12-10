@@ -16,89 +16,89 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $users = [
-        //     [
-        //         'name' => 'Adit Bella',
-        //         'details' => [
-        //             ['phone_number' => '6281806059058'],
-        //             ['phone_number' => '6281913218896']
-        //         ]
-        //     ],
-        //     [
-        //         'name' => 'Adry Corin',
-        //         'details' => [
-        //             ['phone_number' => '6281287770109'],
-        //             ['phone_number' => '6281260600109']
-        //         ]
-        //     ],
-        //     [
-        //         'name' => 'Aldo Dyana',
-        //         'details' => [
-        //             ['phone_number' => '6281212092737'],
-        //             ['phone_number' => '6281519919917']
-        //         ]
-        //     ],
-        //     [
-        //         'name' => 'David Devinca',
-        //         'details' => [
-        //             ['phone_number' => '6285171551704'],
-        //             ['phone_number' => '628886333812']
-        //         ]
-        //     ],
-        //     [
-        //         'name' => 'Edward Regina',
-        //         'details' => [
-        //             ['phone_number' => '6281908960859'],
-        //             ['phone_number' => '6287785044222']
-        //         ]
-        //     ],
-        //     [
-        //         'name' => 'Meiliana',
-        //         'details' => [
-        //             ['phone_number' => '6287780519170']
-        //         ]
-        //     ],
-        //     [
-        //         'name' => 'Mitha Ferdi',
-        //         'details' => [
-        //             ['phone_number' => '6281806270088']
-        //         ]
-        //     ],
-        //     [
-        //         'name' => 'JJ',
-        //         'details' => [
-        //             ['phone_number' => '6281586215559'],
-        //             ['phone_number' => '6281808600700']
-        //         ]
-        //     ]
-        // ];
-
         $users = [
             [
-                'name' => 'Devinca',
+                'name' => 'Adit Bella',
                 'details' => [
-                    ['phone_number' => '6285171551704']
+                    ['phone_number' => '6281806059058'],
+                    ['phone_number' => '6281913218896']
                 ]
             ],
             [
-                'name' => 'David',
+                'name' => 'Adry Corin',
                 'details' => [
+                    ['phone_number' => '6281287770109'],
+                    ['phone_number' => '6281260600109']
+                ]
+            ],
+            [
+                'name' => 'Aldo Dyana',
+                'details' => [
+                    ['phone_number' => '6281212092737'],
+                    ['phone_number' => '6281519919917']
+                ]
+            ],
+            [
+                'name' => 'David Devinca',
+                'details' => [
+                    ['phone_number' => '6285171551704'],
                     ['phone_number' => '628886333812']
                 ]
             ],
             [
-                'name' => 'Adit',
+                'name' => 'Edward Regina',
                 'details' => [
-                    ['phone_number' => '62881082792958']
+                    ['phone_number' => '6281908960859'],
+                    ['phone_number' => '6287785044222']
                 ]
             ],
             [
-                'name' => 'Bella',
+                'name' => 'Meiliana',
                 'details' => [
-                    ['phone_number' => '6287776701704']
+                    ['phone_number' => '6287780519170']
+                ]
+            ],
+            [
+                'name' => 'Mitha Ferdi',
+                'details' => [
+                    ['phone_number' => '6281806270088']
+                ]
+            ],
+            [
+                'name' => 'JJ',
+                'details' => [
+                    ['phone_number' => '6281586215559'],
+                    ['phone_number' => '6281808600700']
                 ]
             ]
         ];
+
+        // $users = [
+        //     [
+        //         'name' => 'Devinca',
+        //         'details' => [
+        //             ['phone_number' => '6285171551704']
+        //         ]
+        //     ],
+        //     [
+        //         'name' => 'David',
+        //         'details' => [
+        //             ['phone_number' => '628886333812']
+        //         ]
+        //     ],
+        //     [
+        //         'name' => 'Adit',
+        //         'details' => [
+        //             ['phone_number' => '62881082792958']
+        //         ]
+        //     ],
+        //     [
+        //         'name' => 'Bella',
+        //         'details' => [
+        //             ['phone_number' => '6287776701704']
+        //         ]
+        //     ]
+        // ];
 
         foreach ($users as $user) {
             $newU = User::create(['name' => $user['name'], 'code' => Str::random(6)]);
