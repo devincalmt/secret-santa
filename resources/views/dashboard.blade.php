@@ -180,8 +180,8 @@
         <form action="{{ route('remind-to-fill') }}" method="post">
             @csrf
             <input type="hidden" name="user_id" value="{{ $loggedInUser->id }}">
-            <button id="remindButton" class="btn btn-secondary" style="display: none;">
-                Ingatkan mereka untuk memutuskan!<br> (Identitas mu dirahasiakan)
+            <button id="remindButton" class="btn btn-info text-white" style="display: none;">
+                <b>Klik disini untuk mengingatkan mereka agar segera memutuskan!<br> (Identitas mu dirahasiakan)</b>
             </button>
         </form>
     </div>
