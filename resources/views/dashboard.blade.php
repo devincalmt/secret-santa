@@ -7,20 +7,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f1f1f1; /* Light gray background for the whole page */
+            background-color: #f1f1f1;
             font-family: 'Arial', sans-serif;
         }
 
         .container {
-            background-color: white; /* White background for the main content */
+            background-color: white;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        /* Christmas Color Scheme */
         .blinking-text {
-            color: #ff3b3f; /* Bright red */
+            color: #ff3b3f;
             font-weight: bold;
             font-size: 1.5rem;
             animation: blink 1s step-start infinite;
@@ -29,7 +28,6 @@
             text-decoration: none;
         }
 
-        /* Blinking animation */
         @keyframes blink {
             50% {
                 opacity: 0;
@@ -59,15 +57,9 @@
             font-size: 1.5rem;
             font-weight: bold;
             margin-top: 20px;
-            color: #006400; /* Dark green */
+            color: #006400;
         }
 
-        /* Wishlist Section */
-        .wishlist-section {
-            display: none; /* Hidden initially */
-        }
-
-        /* Stylish separator */
         .separator-container {
             display: flex;
             justify-content: center;
@@ -79,7 +71,7 @@
         .separator {
             width: 100%;
             height: 2px;
-            background: linear-gradient(to right, #ff3b3f, #ff6347, #ff4500); /* Gradient red shades */
+            background: linear-gradient(to right, #ff3b3f, #ff6347, #ff4500);
             border: none;
             border-radius: 5px;
         }
@@ -94,80 +86,106 @@
             z-index: 1;
         }
 
-        /* Wishlist Form Section */
         #wishlistFormSection {
-            background-color: #e9f5db; /* Light green background */
+            background-color: #e9f5db;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        #wishlistFormSection .btn-primary {
-            display: block;
-            margin: 0 auto;
-        }
-
         .btn-danger {
-            background-color: #ff6347; /* Red for remove buttons */
+            background-color: #ff6347;
         }
 
         .btn-success {
-            background-color: #28a745; /* Green for add button */
+            background-color: #28a745;
         }
 
         .btn-secondary {
-            background-color: #6c757d; /* Gray for reminder button */
+            background-color: #6c757d;
         }
+
+        /* Loading Screen Styles */
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Transparent black background */
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Ensure it's on top */
+        }
+
+        .loading-circle {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #28a745;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .is-invalid {
+            border: 2px solid red;  /* Memberikan border merah pada input yang kosong */
+        }
+
+        .wishlist-section {
+            display: none; /* Hidden initially */
+        }
+
+        #wishlistFormSection .btn-primary {
+            display: block;
+            margin: 0 auto; /* Membuat tombol berada di tengah */
+        }
+
     </style>
 </head>
 <body>
 
 <div class="container mt-5">
-    <!-- Message to fill wishlist with blinking effect -->
     <a href="#myWish" class="blinking-text">
         <p><strong>Jangan lupa untuk mengisi keinginanmu di halaman bawah</strong></p>
     </a>
 
-    <!-- Selected User Display -->
     <div class="text-center mt-4 selected-user" id="selectedUser">
         Selamat! Kamu akan menjadi santa untuk...
     </div>
 
-    <!-- Roulette Animation Box -->
     <div class="roulette-box mt-4">
         <div id="rouletteContainer"></div>
     </div>
 
-    <!-- Button to Start the Roulette -->
     <div class="text-center mt-4">
         <button class="btn btn-primary" id="startRoulette">Cari Tahu Sekarang!</button>
     </div>
 
-    <!-- Wishlist Section for Friend (Initially Hidden) -->
     <div class="wishlist-section mt-4 text-center" id="wishlistSection">
         <h5>{{$receiverName}} Wishlist</h5>
         <div id="wishlistContainer" class="d-inline-block mb-3">
-            <!-- Wishlist or fallback text will be dynamically inserted here -->
         </div>
         <form action="" method="post">
             <button id="remindButton" class="btn btn-secondary" style="display: none;">
-                Ingatkan mereka untuk memutuskan!<br> (identitas mu dirahasiakan)
+                Ingatkan mereka untuk memutuskan!<br> (Identitas mu dirahasiakan)
             </button>
         </form>
     </div>
 
-    <!-- Stylish Separator -->
     <div class="separator-container mt-5" id="myWish">
         <div class="separator"></div>
         <span class="separator-text">Infokan Santa Keinginanmu</span>
     </div>
 
-    <!-- Wishlist Form Section (for your wishlist) -->
     <div class="mt-4" id="wishlistFormSection">
         <h5 class="text-center">My Wishlist</h5>
-        <form id="wishlistForm" action="{{ route('add-my-wishlist') }}" method="post">
-            <input type="hidden" name="user_id" value="{{$loggedInUser->id}}">
-            @csrf
+        <form id="wishlistForm">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -184,7 +202,6 @@
                             <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
                         </tr>
                     @empty
-                        <!-- If no wishlist items exist, show a default empty row -->
                         <tr>
                             <td><input type="text" class="form-control" name="itemName[]" required></td>
                             <td><input type="url" class="form-control" name="itemLink[]" required></td>
@@ -200,32 +217,32 @@
     </div>
 </div>
 
+<!-- Loading Overlay -->
+<div id="loadingOverlay">
+    <div class="loading-circle"></div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     $(document).ready(function() {
-        // Define variables
-        var users = @json($users->pluck('name')); // Laravel passes user names as a JavaScript array
-        var receiverName = "{{ $receiverName }}"; // Correctly passed from Laravel
-        var receiverWishlist = @json($receiverWishlist); // Assume this is an array of items
+        var users = @json($users->pluck('name')); 
+        var receiverName = "{{ $receiverName }}"; 
+        var receiverWishlist = @json($receiverWishlist);
         var rouletteContainer = $('#rouletteContainer');
         var wishlistContainer = $('#wishlistContainer');
         var remindButton = $('#remindButton');
         var wishlistFormSection = $('#wishlistFormSection');
         var wishlistTableBody = $('#wishlistTableBody');
+        var loadingOverlay = $('#loadingOverlay');
 
-        // Wishlist data array
-        var wishlistData = [];
-
-        // Initialize roulette container with ???
         rouletteContainer.html('<div class="roulette-item">???</div>');
 
-        // Display Wishlist or Fallback
         function displayWishlist() {
             if (receiverWishlist.length === 0) {
                 wishlistContainer.html(`<p>${receiverName} belum memutuskan apa yang mereka inginkan.</p>`);
-                remindButton.show(); // Show the remind button
+                remindButton.show();
             } else {
                 let tableHtml = `
                     <table class="table table-bordered">
@@ -237,7 +254,6 @@
                         </thead>
                         <tbody>
                 `;
-
                 receiverWishlist.forEach(item => {
                     tableHtml += `
                         <tr>
@@ -251,19 +267,16 @@
                         </tbody>
                     </table>
                 `;
-
                 wishlistContainer.html(tableHtml);
-                remindButton.hide(); // Hide the remind button
+                remindButton.hide();
             }
         }
         displayWishlist();
 
-        // Show the wishlist form section after roulette ends
         function showWishlistForm() {
             wishlistFormSection.show();
         }
 
-        // Shuffle users for visual randomness
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -272,55 +285,102 @@
         }
         shuffle(users);
 
-        // Roulette logic
         $('#startRoulette').on('click', function() {
-            let audio = new Audio('/audio/roulette-spin.mp3.wav'); // Ensure correct path to your audio file
-
-            // Try playing the audio
+            let audio = new Audio('/audio/roulette-spin.mp3.wav');
             audio.play().catch(function(error) {
                 console.error('Audio playback prevented:', error);
             });
 
-            // Start the roulette animation
             let index = 0;
-            const totalSpins = 30; // Number of spins before stopping
-            const interval = 100; // Speed of rotation in milliseconds
+            const totalSpins = 30; 
+            const interval = 100; 
+            let progress = 0;
 
             const intervalId = setInterval(() => {
-                // Display the current user
                 $('#rouletteContainer').html('<div class="roulette-item">' + users[index] + '</div>');
-                index = (index + 1) % users.length; // Loop through users
+                index = (index + 1) % users.length; 
             }, interval);
 
             setTimeout(() => {
-                clearInterval(intervalId); // Stop the rotation
+                clearInterval(intervalId);
                 $('#rouletteContainer').html('<div class="roulette-item">' + receiverName + '</div>');
-                audio.pause(); // Stop the audio
-                audio.currentTime = 0; // Reset audio position
+                audio.pause(); 
+                audio.currentTime = 0;
 
-                // Hide the Start Roulette button after the spin ends
-                $('#startRoulette').hide(); 
-
-                // Show wishlist form after roulette is done
+                $('#startRoulette').hide();
                 showWishlistForm();
-                $('#wishlistSection').show(); // Show the friend's wishlist section
+                $('#wishlistSection').show(); 
             }, totalSpins * interval);
-
         });
 
-        // Add new item to wishlist
+        $('#saveWishlist').on('click', function(e) {
+            e.preventDefault(); // Prevent form submission for now
+            loadingOverlay.show(); // Show loading overlay
+
+            let isValid = true;
+
+            // Memeriksa setiap input itemName apakah kosong
+            $('input[name="itemName[]"]').each(function() {
+                if ($(this).val().trim() === '') {
+                    isValid = false;
+                    $(this).addClass('is-invalid');  // Memberikan class invalid pada input yang kosong
+                } else {
+                    $(this).removeClass('is-invalid'); // Menghapus class invalid jika input terisi
+                }
+            });
+
+            if (!isValid) {
+                loadingOverlay.hide();
+                return
+            }
+
+            // Prepare the data to be sent in the AJAX request
+            var formData = {
+                user_id: "{{ $loggedInUser->id }}", // user ID from backend
+                itemName: [], // Array to hold the item names
+                itemLink: []  // Array to hold the item links
+                
+            };
+
+            // Gather item names and links from the form
+            $('#wishlistTableBody tr').each(function() {
+                var itemName = $(this).find('input[name="itemName[]"]').val();
+                var itemLink = $(this).find('input[name="itemLink[]"]').val();
+
+                formData.itemName.push(itemName);
+                formData.itemLink.push(itemLink);
+            });
+
+            // Send the AJAX request
+            $.ajax({
+                url: "{{ route('add-my-wishlist') }}",  // The route for adding wishlist
+                method: 'POST',
+                data: {
+                    ...formData,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    loadingOverlay.hide(); // Hide loading overlay after request completes
+                    location.reload(true)
+                },
+                error: function(xhr, status, error) {
+                    loadingOverlay.hide(); // Hide loading overlay if there is an error
+                    alert('Terjadi kesalahan saat menyimpan wishlist!');
+                }
+            });
+        });
+
         $('#addWishlistItem').on('click', function() {
             var itemRow = `
                 <tr>
-                    <td><input type="text" class="form-control" name="itemName[]" required></td>
-                    <td><input type="url" class="form-control" name="itemLink[]" required></td>
+                    <td><input type="text" class="form-control" name="itemName[]"></td>
+                    <td><input type="url" class="form-control" name="itemLink[]"></td>
                     <td><button type="button" class="btn btn-danger remove-item">Hapus</button></td>
                 </tr>
             `;
             wishlistTableBody.append(itemRow);
         });
 
-        // Remove item from wishlist
         $(document).on('click', '.remove-item', function() {
             $(this).closest('tr').remove();
         });

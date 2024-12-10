@@ -22,8 +22,7 @@ class WishlistController extends Controller
         $request->validate([
             'itemName' => 'required|array',
             'itemLink' => 'required|array',
-            'itemName.*' => 'required|string|max:255',
-            'itemLink.*' => 'required|url',
+            'itemName.*' => 'required|string|max:255'
         ]);
 
         // Ensure both arrays are of the same length
